@@ -1,7 +1,7 @@
 DECLARE @StartTime DATETIME = '2024-04-16 00:00:00.000';
 DECLARE @FinishTime DATETIME = '2024-04-18 00:00:00.000';
 
-UPDATE [Sustainability].[dbo].[Report_Electric_Usage_MDB1]
+UPDATE [ISMPALI].[dbo].[Report_Electric_Usage_MDB1]
 SET 
     [PEA_Meter] = SubqueryUpdate.[PEA_Meter],
     [MDB1] = SubqueryUpdate.[MDB1],
@@ -98,7 +98,7 @@ FROM (
         CASE WHEN LAG([Jocky_Pump_kW_Hr]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [Jocky_Pump_kW_Hr] - LAG([Jocky_Pump_kW_Hr]) OVER (ORDER BY [Date]) END AS [Jocky_Pump],
         CASE WHEN LAG([Work_Shop_Sprae_Part_kW_Hr]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [Work_Shop_Sprae_Part_kW_Hr] - LAG([Work_Shop_Sprae_Part_kW_Hr]) OVER (ORDER BY [Date]) END AS [Work_Shop_Sprae_Part],
         CASE WHEN LAG([Office_Plant3_kW_Hr]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [Office_Plant3_kW_Hr] - LAG([Office_Plant3_kW_Hr]) OVER (ORDER BY [Date]) END AS [Office_Plant3]
-        FROM [Sustainability].[dbo].[RawData_Electric_Usage_MDB1]
+        FROM [ISMPALI].[dbo].[RawData_Electric_Usage_MDB1]
         WHERE [Date] BETWEEN @StartTime AND @FinishTime
     ) AS Subquery
 ) AS SubqueryUpdate

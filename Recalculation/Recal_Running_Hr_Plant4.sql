@@ -1,7 +1,7 @@
 DECLARE @StartTime DATETIME = '2024-04-16 00:00:00.000';
 DECLARE @FinishTime DATETIME = '2024-04-18 00:00:00.000';
 
-UPDATE [Sustainability].[dbo].[Report_Running_Hr_Plant4]
+UPDATE [ISMPALI].[dbo].[Report_Running_Hr_Plant4]
 SET 
     [Compressor_01_Cold_Str] = SubqueryUpdate.[Compressor_01_Cold_Str],
     [Compressor_02_IQF7] = SubqueryUpdate.[Compressor_02_IQF7],
@@ -46,7 +46,7 @@ FROM (
             CASE WHEN LAG([Comp_Starter_SC07]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [Comp_Starter_SC07] - LAG([Comp_Starter_SC07]) OVER (ORDER BY [Date]) END AS [Compressor_07_AirCon],
             CASE WHEN LAG([Comp_Starter_SC08]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [Comp_Starter_SC08] - LAG([Comp_Starter_SC08]) OVER (ORDER BY [Date]) END AS [Compressor_08_Spare],
             CASE WHEN LAG([Comp_Starter_SC09]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [Comp_Starter_SC09] - LAG([Comp_Starter_SC09]) OVER (ORDER BY [Date]) END AS [Compressor_09_Office]
-        FROM [Sustainability].[dbo].[Rawdata_Running_Hr_Plant4]
+        FROM [ISMPALI].[dbo].[Rawdata_Running_Hr_Plant4]
         WHERE [Date] BETWEEN @StartTime AND @FinishTime
     ) AS Subquery
 ) AS SubqueryUpdate

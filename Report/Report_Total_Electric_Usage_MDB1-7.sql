@@ -16,19 +16,19 @@ SELECT
     COALESCE(mdb6.[MDB6_kW_Hr], 0) +
     COALESCE(mdb7.[MDB7_kW_Hr], 0) AS ToTal
 FROM 
-    [Sustainability].[dbo].[Rawdata_Electric_Usage_MDB1] mdb1
+    [ISMPALI].[dbo].[Rawdata_Electric_Usage_MDB1] mdb1
 LEFT JOIN 
-    [Sustainability].[dbo].[Rawdata_Electric_Usage_MDB2] mdb2 ON mdb1.[Date] = mdb2.[Date]
+    [ISMPALI].[dbo].[Rawdata_Electric_Usage_MDB2] mdb2 ON mdb1.[Date] = mdb2.[Date]
 LEFT JOIN 
-    [Sustainability].[dbo].[Rawdata_Electric_Usage_MDB3] mdb3 ON mdb1.[Date] = mdb3.[Date]
+    [ISMPALI].[dbo].[Rawdata_Electric_Usage_MDB3] mdb3 ON mdb1.[Date] = mdb3.[Date]
 LEFT JOIN 
-    [Sustainability].[dbo].[Rawdata_Electric_Usage_MDB4] mdb4 ON mdb1.[Date] = mdb4.[Date]
+    [ISMPALI].[dbo].[Rawdata_Electric_Usage_MDB4] mdb4 ON mdb1.[Date] = mdb4.[Date]
 LEFT JOIN 
-    [Sustainability].[dbo].[Rawdata_Electric_Usage_MDB5] mdb5 ON mdb1.[Date] = mdb5.[Date]
+    [ISMPALI].[dbo].[Rawdata_Electric_Usage_MDB5] mdb5 ON mdb1.[Date] = mdb5.[Date]
 LEFT JOIN 
-    [Sustainability].[dbo].[Rawdata_Electric_Usage_MDB6] mdb6 ON mdb1.[Date] = mdb6.[Date]
+    [ISMPALI].[dbo].[Rawdata_Electric_Usage_MDB6] mdb6 ON mdb1.[Date] = mdb6.[Date]
 LEFT JOIN 
-    [Sustainability].[dbo].[Rawdata_Electric_Usage_MDB7] mdb7 ON mdb1.[Date] = mdb7.[Date]
+    [ISMPALI].[dbo].[Rawdata_Electric_Usage_MDB7] mdb7 ON mdb1.[Date] = mdb7.[Date]
 WHERE 
     mdb1.[Date] BETWEEN '2024-04-13 00:00:00.000' AND '2024-04-19 00:00:00.000'
 GROUP BY
@@ -93,19 +93,19 @@ SELECT
 
 
 FROM 
-    [Sustainability].[dbo].[Rawdata_Electric_Usage_MDB1] mdb1
+    [ISMPALI].[dbo].[Rawdata_Electric_Usage_MDB1] mdb1
 LEFT JOIN 
-    [Sustainability].[dbo].[Rawdata_Electric_Usage_MDB2] mdb2 ON mdb1.[Date] = mdb2.[Date]
+    [ISMPALI].[dbo].[Rawdata_Electric_Usage_MDB2] mdb2 ON mdb1.[Date] = mdb2.[Date]
 LEFT JOIN 
-    [Sustainability].[dbo].[Rawdata_Electric_Usage_MDB3] mdb3 ON mdb1.[Date] = mdb3.[Date]
+    [ISMPALI].[dbo].[Rawdata_Electric_Usage_MDB3] mdb3 ON mdb1.[Date] = mdb3.[Date]
 LEFT JOIN 
-    [Sustainability].[dbo].[Rawdata_Electric_Usage_MDB4] mdb4 ON mdb1.[Date] = mdb4.[Date]
+    [ISMPALI].[dbo].[Rawdata_Electric_Usage_MDB4] mdb4 ON mdb1.[Date] = mdb4.[Date]
 LEFT JOIN 
-    [Sustainability].[dbo].[Rawdata_Electric_Usage_MDB5] mdb5 ON mdb1.[Date] = mdb5.[Date]
+    [ISMPALI].[dbo].[Rawdata_Electric_Usage_MDB5] mdb5 ON mdb1.[Date] = mdb5.[Date]
 LEFT JOIN 
-    [Sustainability].[dbo].[Rawdata_Electric_Usage_MDB6] mdb6 ON mdb1.[Date] = mdb6.[Date]
+    [ISMPALI].[dbo].[Rawdata_Electric_Usage_MDB6] mdb6 ON mdb1.[Date] = mdb6.[Date]
 LEFT JOIN 
-    [Sustainability].[dbo].[Rawdata_Electric_Usage_MDB7] mdb7 ON mdb1.[Date] = mdb7.[Date]
+    [ISMPALI].[dbo].[Rawdata_Electric_Usage_MDB7] mdb7 ON mdb1.[Date] = mdb7.[Date]
 WHERE 
     mdb1.[Date] BETWEEN '2024-04-13 00:00:00.000' AND '2024-04-19 00:00:00.000'
 GROUP BY
