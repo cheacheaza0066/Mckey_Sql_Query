@@ -43,6 +43,6 @@ FROM (
         CASE WHEN LAG([Lighting_Receptacial_Solid_West_kW_Hr]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [Lighting_Receptacial_Solid_West_kW_Hr] - LAG([Lighting_Receptacial_Solid_West_kW_Hr]) OVER (ORDER BY [Date]) END AS [Lighting_Receptacial_Solid_West],
         CASE WHEN LAG([WWTP_Plant4_kW_Hr]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [WWTP_Plant4_kW_Hr] - LAG([WWTP_Plant4_kW_Hr]) OVER (ORDER BY [Date]) END AS [WWTP_Plant4]
        
-    FROM [ISMPALI].[dbo].[RawData_Electric_Usage_MDB2]
+    FROM [ISMPALI].[dbo].[ut_sus_rw_data_electric_usage_mdb2]
    -- where [[RawData_Electric_Usage_MDB1]].[Date] between :Start and :Finish
 ) AS Subquery;

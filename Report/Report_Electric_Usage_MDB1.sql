@@ -1,4 +1,4 @@
-INSERT INTO [ISMPALI].[dbo].[Report_Electric_Usage_MDB1]
+INSERT INTO [ISMPALI].[dbo].[ut_sus_rpt_electric_usage_mdb1]
     (
     [Date]
     ,[Unit]
@@ -97,10 +97,10 @@ FROM (
         CASE WHEN LAG([Jocky_Pump_kW_Hr]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [Jocky_Pump_kW_Hr] - LAG([Jocky_Pump_kW_Hr]) OVER (ORDER BY [Date]) END AS [Jocky_Pump],
         CASE WHEN LAG([Work_Shop_Sprae_Part_kW_Hr]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [Work_Shop_Sprae_Part_kW_Hr] - LAG([Work_Shop_Sprae_Part_kW_Hr]) OVER (ORDER BY [Date]) END AS [Work_Shop_Sprae_Part],
         CASE WHEN LAG([Office_Plant3_kW_Hr]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [Office_Plant3_kW_Hr] - LAG([Office_Plant3_kW_Hr]) OVER (ORDER BY [Date]) END AS [Office_Plant3]
-    FROM [ISMPALI].[dbo].[RawData_Electric_Usage_MDB1]
+    FROM [ISMPALI].[dbo].[ut_sus_rw_data_electric_usage_mdb1]
 ) AS Subquery
 WHERE NOT EXISTS (
     SELECT 1
-FROM [ISMPALI].[dbo].[Report_Electric_Usage_MDB1]
-WHERE [Report_Electric_Usage_MDB1].[Date] = Subquery.[Date]
+FROM [ISMPALI].[dbo].[ut_sus_rpt_electric_usage_mdb1]
+WHERE [ut_sus_rpt_electric_usage_mdb1].[Date] = Subquery.[Date]
 );

@@ -1,4 +1,4 @@
-INSERT INTO [ISMPALI].[dbo].[Report_Running_Hr_Plant3]
+INSERT INTO [ISMPALI].[dbo].[ut_sus_rpt_running_hr_plant3]
     (
     [Date],
     [Unit],
@@ -46,10 +46,10 @@ FROM (
         CASE WHEN LAG([Comp_Starter_SC07]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [Comp_Starter_SC07] - LAG([Comp_Starter_SC07]) OVER (ORDER BY [Date]) END AS [Compressor_07_Spare],
         CASE WHEN LAG([Comp_Starter_SC08]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [Comp_Starter_SC08] - LAG([Comp_Starter_SC08]) OVER (ORDER BY [Date]) END AS [Compressor_08_Office],
         CASE WHEN LAG([Comp_Starter_SC09]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [Comp_Starter_SC09] - LAG([Comp_Starter_SC09]) OVER (ORDER BY [Date]) END AS [Compressor_09_Office]
-    FROM [ISMPALI].[dbo].[Rawdata_Running_Hr_Plant3]
+    FROM [ISMPALI].[dbo].[ut_sus_rw_data_running_hr_plant3]
 ) AS Subquery
 WHERE NOT EXISTS (
     SELECT 1
-FROM [ISMPALI].[dbo].[Report_Running_Hr_Plant3]
-WHERE [Report_Running_Hr_Plant3].[Date] = Subquery.[Date]
+FROM [ISMPALI].[dbo].[ut_sus_rpt_running_hr_plant3]
+WHERE [ut_sus_rpt_running_hr_plant3].[Date] = Subquery.[Date]
 );

@@ -58,6 +58,6 @@ FROM (
 
 
 
-    FROM [ISMPALI].[dbo].[Rawdata_Running_Hr_Plant4]
+    FROM [ISMPALI].[dbo].[ut_sus_rw_data_running_hr_plant4]
    -- where [Rawdata_Running_Hr_Plant3].[Date] between :Start and :Finish
 ) AS Subquery
