@@ -27,5 +27,5 @@ FROM (
 WHERE NOT EXISTS (
     SELECT 1
 FROM [Test].[dbo].[Report_CO2_Usage]
-WHERE [Test].[dbo].[Report_CO2_Usage].[Date] = Subquery.[Date]l
+WHERE [Test].[dbo].[Report_CO2_Usage].[Date] = Subquery.[Date]
 );
