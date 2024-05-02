@@ -95,3 +95,5 @@ FROM (
     FROM [ISMPALI].[dbo].[ut_sus_rw_data_electric_usage_mdb1]
    -- where [[RawData_Electric_Usage_MDB1]].[Date] between :Start and :Finish
 ) AS Subquery;
+
+
