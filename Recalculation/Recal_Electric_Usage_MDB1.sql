@@ -1,7 +1,7 @@
 DECLARE @StartTime DATETIME = '2024-04-16 00:00:00.000';
 DECLARE @FinishTime DATETIME = '2024-04-18 00:00:00.000';
 
-UPDATE [ISMPALI].[dbo].[ut_sus_rw_data_electric_usage_mdb1]
+UPDATE [ISMPALI].[dbo].[ut_sus_rpt_electric_usage_mdb1]
 SET 
     [PEA_Meter] = SubqueryUpdate.[PEA_Meter],
     [MDB1] = SubqueryUpdate.[MDB1],
@@ -103,5 +103,5 @@ FROM (
     ) AS Subquery
 ) AS SubqueryUpdate
 WHERE
-    [ut_sus_rw_data_electric_usage_mdb1].[Date] = SubqueryUpdate.[Date]
-    AND [ut_sus_rw_data_electric_usage_mdb1].Approve = 0;
+    [ut_sus_rpt_electric_usage_mdb1].[Date] = SubqueryUpdate.[Date]
+    AND [ut_sus_rpt_electric_usage_mdb1].Approve = 0;

@@ -1,13 +1,13 @@
 DECLARE @StartTime DATETIME = '2024-04-16 00:00:00.000';
 DECLARE @FinishTime DATETIME = '2024-04-18 00:00:00.000';
 
-UPDATE [ISMPALI].[dbo].[ut_sus_rw_data_electric_usage_mdb2]
+UPDATE [ISMPALI].[dbo].[ut_sus_rpt_electric_usage_mdb2]
 SET 
-    [MDB2] = SubqueryUpdate.[MDB2]
+   [MDB2]= SubqueryUpdate.[MDB2]
     ,[Cold_Water_Pump]= SubqueryUpdate.[Cold_Water_Pump]
     ,[Waste_Water_Treatment]= SubqueryUpdate.[Waste_Water_Treatment]
-    ,[Softwater_Pump]= SubqueryUpdate.[Softwater_Pump]
-    ,[Water_Treatment]= SubqueryUpdate.[Water_Treatment]
+    ,[Softwater_Pump] =SubqueryUpdate.[Softwater_Pump]
+    ,[Water_Treatment] =SubqueryUpdate.[Water_Treatment]
     ,[Lighting_Receptacial_Water_Tank]= SubqueryUpdate.[Lighting_Receptacial_Water_Tank]
     ,[Softener]= SubqueryUpdate.[Softener]
     ,[Lighting_Receptacial_Solid_West]= SubqueryUpdate.[Lighting_Receptacial_Solid_West]
@@ -16,22 +16,21 @@ SET
     
 FROM (
     SELECT
-       [Date]
-    , [Unit]
-    , [MDB2]
-      , [Cold_Water_Pump]
-      , [Waste_Water_Treatment]
-      , [Softwater_Pump]
-      , [Water_Treatment]
-      , [Lighting_Receptacial_Water_Tank]
-      , [Softener]
-      , [Lighting_Receptacial_Solid_West]
-      , [WWTP_Plant4]
+        [Date]
+     ,[MDB2]
+      ,[Cold_Water_Pump]
+      ,[Waste_Water_Treatment]
+      ,[Softwater_Pump]
+      ,[Water_Treatment]
+      ,[Lighting_Receptacial_Water_Tank]
+      ,[Softener]
+      ,[Lighting_Receptacial_Solid_West]
+      ,[WWTP_Plant4]
     FROM (
         SELECT
-            [Date],
-        [Unit],
-        [MDB2_kW_Hr]
+        [Date],
+        [Unit]
+        ,[MDB2_kW_Hr]
       ,[Cold_Water_Pump_kW_Hr]
       ,[Waste_Water_Treatment_kW_Hr]
       ,[Softwater_Pump_kW_Hr]
@@ -49,11 +48,11 @@ FROM (
         CASE WHEN LAG([Softener_kW_Hr]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [Softener_kW_Hr] - LAG([Softener_kW_Hr]) OVER (ORDER BY [Date]) END AS [Softener],
         CASE WHEN LAG([Lighting_Receptacial_Solid_West_kW_Hr]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [Lighting_Receptacial_Solid_West_kW_Hr] - LAG([Lighting_Receptacial_Solid_West_kW_Hr]) OVER (ORDER BY [Date]) END AS [Lighting_Receptacial_Solid_West],
         CASE WHEN LAG([WWTP_Plant4_kW_Hr]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [WWTP_Plant4_kW_Hr] - LAG([WWTP_Plant4_kW_Hr]) OVER (ORDER BY [Date]) END AS [WWTP_Plant4]
-       
-        FROM [ISMPALI].[dbo].[ut_sus_rw_data_electric_usage_mdb2]
+         FROM [ISMPALI].[dbo].[ut_sus_rw_data_electric_usage_mdb2]
         WHERE [Date] BETWEEN @StartTime AND @FinishTime
     ) AS Subquery
 ) AS SubqueryUpdate
 WHERE
-    [ut_sus_rw_data_electric_usage_mdb2].[Date] = SubqueryUpdate.[Date]
-    AND [ut_sus_rw_data_electric_usage_mdb2].Approve = 0;
+    [ut_sus_rpt_electric_usage_mdb2].[Date] = SubqueryUpdate.[Date]
+
+    AND [ut_sus_rpt_electric_usage_mdb2].Approve = 0;
