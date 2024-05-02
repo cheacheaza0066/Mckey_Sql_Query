@@ -1,0 +1,23 @@
+SELECT
+       [Date]
+      ,[Unit]
+      ,[Salt_usage_P3]
+      ,[Cl_usage_P3]
+      ,[Salt_usage_P4]
+      ,[Cl_usage_P4]
+      ,[Cl2_0.5_1_ppm_07.00_AM_P3]
+      ,[Cl2_0.5_1_ppm_07.00_PM_P3]
+      ,[Cl2_0.5_1_ppm_07.00_AM_P4]
+      ,[Cl2_0.5_1_ppm_07.00_PM_P4]
+from(select 
+	   [Date]
+      ,[Unit]
+      ,[Salt_usage_P3]
+      ,[Cl_usage_P3]
+      ,[Salt_usage_P4]
+      ,[Cl_usage_P4]
+      ,[Cl2_0.5_1_ppm_07.00_AM_P3]
+      ,[Cl2_0.5_1_ppm_07.00_PM_P3]
+      ,[Cl2_0.5_1_ppm_07.00_AM_P4]
+      ,[Cl2_0.5_1_ppm_07.00_PM_P4]
+FROM [Test].[dbo].[RawData_Cl2_Usage_Controller]) as Subquery
