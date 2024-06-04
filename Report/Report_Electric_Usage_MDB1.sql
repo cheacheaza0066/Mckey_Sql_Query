@@ -98,6 +98,8 @@ FROM (
         CASE WHEN LAG([Work_Shop_Sprae_Part_kW_Hr]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [Work_Shop_Sprae_Part_kW_Hr] - LAG([Work_Shop_Sprae_Part_kW_Hr]) OVER (ORDER BY [Date]) END AS [Work_Shop_Sprae_Part],
         CASE WHEN LAG([Office_Plant3_kW_Hr]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [Office_Plant3_kW_Hr] - LAG([Office_Plant3_kW_Hr]) OVER (ORDER BY [Date]) END AS [Office_Plant3]
     FROM [ISMPALI].[dbo].[ut_sus_rw_data_electric_usage_mdb1]
+        WHERE [Date] BETWEEN CONVERT(date, GETDATE() - 1 ) AND CONVERT(date, GETDATE() )
+
 ) AS Subquery
 WHERE NOT EXISTS (
     SELECT 1

@@ -48,6 +48,8 @@ FROM (
         CASE WHEN LAG([WWTP_Plant4_kW_Hr]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [WWTP_Plant4_kW_Hr] - LAG([WWTP_Plant4_kW_Hr]) OVER (ORDER BY [Date]) END AS [WWTP_Plant4]
        
     FROM [ISMPALI].[dbo].[ut_sus_rw_data_electric_usage_mdb2]
+        WHERE [Date] BETWEEN CONVERT(date, GETDATE() - 1 ) AND CONVERT(date, GETDATE() )
+
 ) AS Subquery
 WHERE NOT EXISTS (
     SELECT 1

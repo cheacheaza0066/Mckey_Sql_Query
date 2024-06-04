@@ -69,6 +69,8 @@ FROM (
 	      CASE WHEN LAG([PSMCC_3_kW_Hr]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [PSMCC_3_kW_Hr] - LAG([PSMCC_3_kW_Hr]) OVER (ORDER BY [Date]) END AS [PSMCC_3]
 
     FROM [ISMPALI].[dbo].[ut_sus_rw_data_electric_usage_mdb5]
+        WHERE [Date] BETWEEN CONVERT(date, GETDATE() - 1 ) AND CONVERT(date, GETDATE() )
+
 ) AS Subquery
 WHERE NOT EXISTS (
     SELECT 1
