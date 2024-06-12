@@ -1,7 +1,7 @@
 DECLARE @StartTime DATETIME = '2024-03-12 00:00:00.000';
 DECLARE @FinishTime DATETIME = '2024-05-12 00:00:00.000';
 
-UPDATE [Test].[dbo].[Report_Steam_Boiler_Usage]
+UPDATE [ISMPALI].[dbo].[ut_sus_rpt_steam_boiler_usage]
 SET 
        [Water_usage_Boiler_01] = SubqueryUpdate.[Water_usage_Boiler_01]
       ,[Water_usage_Boiler_02] = SubqueryUpdate.[Water_usage_Boiler_02]
@@ -31,10 +31,10 @@ FROM (
 	  ,case when LEAD([Meters_boiler_04]) over (order by [Date]) - [Meters_boiler_04] is null then 0 else LEAD([Meters_boiler_04]) over (order by [Date]) - [Meters_boiler_04] END as [Water_usage_Boiler_04]
 	  ,case when (Lead([Meters_boiler_01]) over (order by [Date]) - [Meters_boiler_01]) + (Lead([Meters_boiler_02]) over (order by [Date]) - [Meters_boiler_02]) is null then 0 else (Lead([Meters_boiler_01]) over (order by [Date]) - [Meters_boiler_01]) + (Lead([Meters_boiler_02]) over (order by [Date]) - [Meters_boiler_02]) END as [Total_usage_Boiler_01_02]
 	  ,case when (Lead([Meters_boiler_03]) over (order by [Date]) - [Meters_boiler_03]) + (Lead([Meters_boiler_04]) over (order by [Date]) - [Meters_boiler_04]) is null then 0 else (Lead([Meters_boiler_03]) over (order by [Date]) - [Meters_boiler_03]) + (Lead([Meters_boiler_04]) over (order by [Date]) - [Meters_boiler_04]) END as [Total_usage_Boiler_03_04]
-	  from [Test].[dbo].[RawData_Steam_Boiler_Usage]
+	  from [Test].[dbo].[ut_sus_rw_data_steam_boiler_usage]
         WHERE [Date] BETWEEN @StartTime AND @FinishTime
     ) AS Subquery
 ) AS SubqueryUpdate
 WHERE
-    [Test].[dbo].[Report_Steam_Boiler_Usage].[Date] = SubqueryUpdate.[Date]
-    AND [Test].[dbo].[Report_Steam_Boiler_Usage].Approve = 0;
+    [ISMPALI].[dbo].[ut_sus_rpt_steam_boiler_usage].[Date] = SubqueryUpdate.[Date]
+    AND [ISMPALI].[dbo].[ut_sus_rpt_steam_boiler_usage].Approve = 0;
