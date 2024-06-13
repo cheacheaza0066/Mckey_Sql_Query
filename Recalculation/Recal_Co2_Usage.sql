@@ -23,4 +23,4 @@ FROM SubqueryUpdate
 WHERE 
     [ut_sus_rpt_co2_usage].[Date] = @FinishTime
     AND [ut_sus_rpt_co2_usage].[Approve] = 0
-    AND SubqueryUpdate.RowNum = 2; -- Update only the second row from the subquery
+    AND SubqueryUpdate.RowNum = 2; 
