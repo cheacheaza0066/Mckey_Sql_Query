@@ -1,22 +1,17 @@
-DECLARE @StartTime DATETIME = '2024-04-16 00:00:00.000';
-DECLARE @FinishTime DATETIME = '2024-04-18 00:00:00.000';
+DECLARE @StartTime DATETIME = '2024-06-12 00:00:00.000';
+DECLARE @FinishTime DATETIME = '2024-06-13 00:00:00.000';
 
-UPDATE [ISMPALI].[dbo].[ut_sus_rpt_solar_cell]
-SET 
-    [Solar_Plant3]= SubqueryUpdate.[Solar_Plant3]
-      ,[Solar_Plant4]= SubqueryUpdate.[Solar_Plant4]
-      ,[Solar_Car_Park]= SubqueryUpdate.[Solar_Car_Park]
-
-    
-FROM (
+WITH SubqueryUpdate AS (
     SELECT
         [Date]
      ,[Solar_Plant3]
       ,[Solar_Plant4]
-      ,[Solar_Car_Park]
+      ,[Solar_Car_Park],
+        ROW_NUMBER() OVER (ORDER BY [Date]) AS RowNum
     FROM (
         SELECT
-        [Date],
+            [ID],
+            [Date],
         [Unit]
         ,[Solar_Plant3_kW_Hr]
       ,[Solar_Plant4_kW_Hr]
@@ -30,8 +25,14 @@ FROM (
          FROM [ISMPALI].[dbo].[ut_sus_rw_data_solar_cell]
         WHERE [Date] BETWEEN @StartTime AND @FinishTime
     ) AS Subquery
-) AS SubqueryUpdate
+)
+UPDATE [ISMPALI].[dbo].[ut_sus_rpt_solar_cell]
+SET 
+    [Solar_Plant3]= SubqueryUpdate.[Solar_Plant3]
+      ,[Solar_Plant4]= SubqueryUpdate.[Solar_Plant4]
+      ,[Solar_Car_Park]= SubqueryUpdate.[Solar_Car_Park]
+FROM SubqueryUpdate
 WHERE
-    [ut_sus_rpt_solar_cell].[Date] = SubqueryUpdate.[Date]
-
-    AND [ut_sus_rpt_solar_cell].Approve = 0;
+    [ut_sus_rpt_solar_cell].[Date] = @FinishTime
+    AND [ut_sus_rpt_solar_cell].Approve = 0
+    AND SubqueryUpdate.RowNum = 2; 
