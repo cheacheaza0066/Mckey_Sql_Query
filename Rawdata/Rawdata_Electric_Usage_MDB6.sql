@@ -31,7 +31,7 @@ FROM (
         CASE WHEN LAG([SC_16_High_Stage_AC_kW_Hr]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [SC_16_High_Stage_AC_kW_Hr] - LAG([SC_16_High_Stage_AC_kW_Hr]) OVER (ORDER BY [Date]) END AS [SC_16_High_Stage_AC],
         CASE WHEN LAG([SC_17_Swing_Standby_kW_Hr]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [SC_17_Swing_Standby_kW_Hr] - LAG([SC_17_Swing_Standby_kW_Hr]) OVER (ORDER BY [Date]) END AS [SC_17_Swing_Standby],
         CASE WHEN LAG([SC_11_Booster_IQF3_kW_Hr]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [SC_11_Booster_IQF3_kW_Hr] - LAG([SC_11_Booster_IQF3_kW_Hr]) OVER (ORDER BY [Date]) END AS [SC_11_Booster_IQF3],
-        CASE WHEN LAG([Auxiliary_kW_Hr]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [Auxiliary_kW_Hr] - LAG([Auxiliary_kW_Hr]) OVER (ORDER BY [Date]) END AS [Auxiliary_kW_Hr]
+        CASE WHEN LAG([Auxiliary_kW_Hr]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [Auxiliary_kW_Hr] - LAG([Auxiliary_kW_Hr]) OVER (ORDER BY [Date]) END AS [Auxiliary]
 
 
        

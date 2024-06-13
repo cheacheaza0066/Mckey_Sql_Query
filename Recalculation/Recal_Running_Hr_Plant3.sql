@@ -1,18 +1,7 @@
 DECLARE @StartTime DATETIME = '2024-04-16 00:00:00.000';
 DECLARE @FinishTime DATETIME = '2024-04-18 00:00:00.000';
 
-UPDATE [ISMPALI].[dbo].[ut_sus_rpt_running_hr_plant3]
-SET 
-    [Compressor_01_IQF5] = SubqueryUpdate.[Compressor_01_IQF5],
-    [Compressor_02_IQF5] = SubqueryUpdate.[Compressor_02_IQF5],
-    [Compressor_03_IQF6] = SubqueryUpdate.[Compressor_03_IQF6],
-    [Compressor_04_Cold_Str] = SubqueryUpdate.[Compressor_04_Cold_Str],
-    [Compressor_05_Roomtemp] = SubqueryUpdate.[Compressor_05_Roomtemp],
-    [Compressor_06_Roomtemp] = SubqueryUpdate.[Compressor_06_Roomtemp],
-    [Compressor_07_Spare] = SubqueryUpdate.[Compressor_07_Spare],
-    [Compressor_08_Office] = SubqueryUpdate.[Compressor_08_Office],
-    [Compressor_09_Office] = SubqueryUpdate.[Compressor_09_Office]
-FROM (
+WITH SubqueryUpdate AS (
     SELECT
         [Date],
         [Compressor_01_IQF5],
@@ -23,11 +12,12 @@ FROM (
         [Compressor_06_Roomtemp],
         [Compressor_07_Spare],
         [Compressor_08_Office],
-        [Compressor_09_Office]
+        [Compressor_09_Office],
+        ROW_NUMBER() OVER (ORDER BY [Date]) AS RowNum
     FROM (
         SELECT
+            [ID],
             [Date],
-
             [Comp_Starter_SC01],
             [Comp_Starter_SC02],
             [Comp_Starter_SC03],
@@ -49,7 +39,20 @@ FROM (
         FROM [ISMPALI].[dbo].[ut_sus_rw_data_running_hr_plant3]
         WHERE [Date] BETWEEN @StartTime AND @FinishTime
     ) AS Subquery
-) AS SubqueryUpdate
+)
+UPDATE [ISMPALI].[dbo].[ut_sus_rpt_running_hr_plant3]
+SET 
+    [Compressor_01_IQF5] = SubqueryUpdate.[Compressor_01_IQF5],
+    [Compressor_02_IQF5] = SubqueryUpdate.[Compressor_02_IQF5],
+    [Compressor_03_IQF6] = SubqueryUpdate.[Compressor_03_IQF6],
+    [Compressor_04_Cold_Str] = SubqueryUpdate.[Compressor_04_Cold_Str],
+    [Compressor_05_Roomtemp] = SubqueryUpdate.[Compressor_05_Roomtemp],
+    [Compressor_06_Roomtemp] = SubqueryUpdate.[Compressor_06_Roomtemp],
+    [Compressor_07_Spare] = SubqueryUpdate.[Compressor_07_Spare],
+    [Compressor_08_Office] = SubqueryUpdate.[Compressor_08_Office],
+    [Compressor_09_Office] = SubqueryUpdate.[Compressor_09_Office]
+FROM SubqueryUpdate
 WHERE
-    [ut_sus_rpt_running_hr_plant3].[Date] = SubqueryUpdate.[Date]
-    AND [ut_sus_rpt_running_hr_plant3].Approve = 0;
+    [ut_sus_rpt_running_hr_plant3].[Date] = @FinishTime
+    AND [ut_sus_rpt_running_hr_plant3].Approve = 0
+    AND SubqueryUpdate.RowNum = 2; 
