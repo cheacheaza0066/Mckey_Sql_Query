@@ -1,46 +1,49 @@
-SELECT TOP (1000)
-  [Date]
+INSERT INTO [ISMPALI].[dbo].[ut_sus_rpt_cng_usage]
+    (
+     [Date]
+      ,[Unit]
+      ,[Total_CNG_usage]
+      ,[SCM_CNG_usage]
+      ,[Hot_oil_01_Usage]
+      ,[Hot_oil_02_Usage]
+      ,[Hot_oil_03_Usage]
+      ,[Hot_oil_04_Usage]
+      ,[Hot_oil_05_Usage]
+      ,[Boiler_01_Usage]
+      ,[Boiler_02_Usage]
+      ,[Boiler_03_Usage]
+      ,[Boiler_04_Usage]
+      ,[Hot_oil_Boiler_01_02] --Total_Hot_oil_01_02 + Total_Boiler_01_02
+      ,[SCM_Hot_oil_Boiler_Usage_01_02]
+      ,[Total_Hot_Oil_Boiler_Usage_03_04_05]
+      ,[SCM_Hot_oil_Boiler_Usage_03_04_05]
+      
+    )
+SELECT
+     [Date]
       , [Unit]
-      , [RUN_A_Meters] 
-      , [RUN_B_Meters]
-      , [RUN_A_Usage]
-      , [RUN_B_Usage]
       , (RUN_A_Usage + RUN_B_Usage) AS Total_CNG_usage
-    , (RUN_A_Usage + RUN_B_Usage) * (27 + 14.696) * (60 + 460) / (14.73 * (9 * (25 + 273.15) / 5)) AS [SCM_CNG_usage]
-      , [Hot_oil_01_Meters]
-      , [Hot_oil_02_Meters]
-      , [Hot_oil_03_Meters]
-      , [Hot_oil_04_Meters]
-      , [Hot_oil_05_Meters]
-      , [Hot_oil_01_Usage]
-      , [Hot_oil_02_Usage]
-      , [Hot_oil_03_Usage]
-      , [Hot_oil_04_Usage]
-      , [Hot_oil_05_Usage]
-      , (Hot_oil_01_Usage + Hot_oil_02_Usage)  as Total_Hot_oil_01_02
-      , (Hot_oil_03_Usage + Hot_oil_04_Usage + Hot_oil_05_Usage) as Total_Hot_oil_03_04_05
-
-      , [Boiler_01_Meters]
-      , [Boiler_02_Meters]
-      , [Boiler_03_Meters]
-      , [Boiler_04_Meters]
+        , (RUN_A_Usage + RUN_B_Usage) * (27 + 14.696) * (60 + 460) / (14.73 * (9 * (25 + 273.15) / 5)) AS [SCM_CNG_usage]
+      , [Hot_oil_01_Usage] 
+      , [Hot_oil_02_Usage] 
+      , [Hot_oil_03_Usage] 
+      , [Hot_oil_04_Usage] 
+      , [Hot_oil_05_Usage] 
       , [Boiler_01_Usage]
       , [Boiler_02_Usage]
       , [Boiler_03_Usage]
       , [Boiler_04_Usage]
-      , (Boiler_01_Usage + Boiler_02_Usage) as [Total_Boiler_01_02]
-      , (Boiler_03_Usage + Boiler_04_Usage) as [Total_Boiler_03_04]
+      , ((Hot_oil_01_Usage + Hot_oil_02_Usage)+(Boiler_01_Usage + Boiler_02_Usage))  as Hot_oil_Boiler_01_02
+      , ((([Hot_oil_01_Usage] + [Hot_oil_02_Usage]) + ([Hot_oil_03_Usage] + [Hot_oil_04_Usage] + [Hot_oil_05_Usage]) + ([Boiler_01_Usage] + [Boiler_02_Usage]) + ([Boiler_03_Usage] + [Boiler_04_Usage])) * (27 + 14.696) * (60 + 460) / (14.73 * (9 * (25 + 273.15) / 5))) AS [SCM_Hot_oil_Boiler_Usage_01_02]
 
-      , ((Hot_oil_01_Usage + Hot_oil_02_Usage) + (Hot_oil_03_Usage + Hot_oil_04_Usage + Hot_oil_05_Usage) + (Boiler_01_Usage + Boiler_02_Usage)+(Boiler_03_Usage + Boiler_04_Usage)) AS [Total_Hot_Oil_Boiler_Usage]
- , ((([Hot_oil_01_Usage] + [Hot_oil_02_Usage]) + ([Hot_oil_03_Usage] + [Hot_oil_04_Usage] + [Hot_oil_05_Usage]) + ([Boiler_01_Usage] + [Boiler_02_Usage]) + ([Boiler_03_Usage] + [Boiler_04_Usage])) * (27 + 14.696) * (60 + 460) / (14.73 * (9 * (25 + 273.15) / 5))) AS [SCM_Hot_oil_Boiler_Usage_01_02]
 
 , ((Hot_oil_03_Usage + Hot_oil_04_Usage + Hot_oil_05_Usage)+(Boiler_03_Usage + Boiler_04_Usage)) as [Total_Hot_Oil_Boiler_Usage_03_04_05]
 
 , (((Hot_oil_03_Usage + Hot_oil_04_Usage + Hot_oil_05_Usage) + (Boiler_03_Usage + Boiler_04_Usage)) * (27 + 14.696) * (60 + 460) / (14.73 * (9 * (25 + 273.15) / 5))) as SCM_Hot_oil_Boiler_Usage_03_04_05
 
-
-FROM (select
-    [Date]
+FROM (
+    SELECT
+       [Date]
       , [Unit]
       , [RUN_A_Meters] 
       , [RUN_B_Meters]
@@ -69,7 +72,12 @@ FROM (select
 
 
 
-  from [ISMPALI].[dbo].[ut_sus_rw_data_cng_usage]) 
-     -- where [[ut_sus_rw_data_cng_usage]].[Date] between :Start and :Finish
+  from [ISMPALI].[dbo].[ut_sus_rw_data_cng_usage]
+        WHERE [Date] BETWEEN CONVERT(date, GETDATE() - 1 ) AND CONVERT(date, GETDATE() )
 
-  as Subquery
+) AS Subquery
+WHERE NOT EXISTS (
+    SELECT 1
+FROM [ISMPALI].[dbo].[ut_sus_rpt_cng_usage]
+WHERE [ut_sus_rpt_cng_usage].[Date] = Subquery.[Date]
+);
