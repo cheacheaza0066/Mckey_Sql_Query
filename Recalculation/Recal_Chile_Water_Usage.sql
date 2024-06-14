@@ -1,5 +1,7 @@
-DECLARE @StartTime DATETIME = '2024-06-12 00:00:00.000';
+DECLARE @StartTime DATETIME = '2024-06-12 00:00:00.000';--keyin
 DECLARE @FinishTime DATETIME = '2024-06-13 00:00:00.000';
+-- DECLARE @FinishTime DATETIME = CAST(GETDATE() AS DATE); 
+-- DECLARE @StartTime DATETIME = DATEADD(DAY, -1, @FinishTime);
 
 WITH SubqueryUpdate AS (
     SELECT
@@ -8,6 +10,8 @@ WITH SubqueryUpdate AS (
     ,[Usage_Chilled_water_Line5_6]
       ,[Usage_Chilled_water_Line7_8_9]
       ,[Water_Glazing_Line7_8_9_per_Day]
+      ,        ROW_NUMBER() OVER (ORDER BY [Date]) AS RowNum
+
 
 FROM (
     SELECT
@@ -36,6 +40,6 @@ SET
 
 FROM SubqueryUpdate
 WHERE 
-    [ut_sus_rpt_chille_water_usage].[Date] = @FinishTime
+    [ut_sus_rpt_chille_water_usage].[Date] = @StartTime
     AND [ut_sus_rpt_chille_water_usage].[Approve] = 0
-    AND SubqueryUpdate.RowNum = 2; 
+    AND SubqueryUpdate.RowNum = 1; 

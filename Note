@@ -1,7 +1,16 @@
-lead or lag
-ถ้า Recal ตรงที่เลือกวัน ใช้ Startime -1 จาก Finishtime 
-โดย Finishtime ให้เลือก User เลือก Row ที่จะ update
+lag
 
 example
 DECLARE @StartTime DATETIME = '2024-06-12 00:00:00.000';
-DECLARE @FinishTime DATETIME = '2024-06-13 00:00:00.000'; (User เลือก)
+DECLARE @FinishTime DATETIME = '2024-06-13 00:00:00.000'; (User เลือก) keyin
+SubqueryUpdate.RowNum = 2; 
+
+
+
+lead
+
+example
+DECLARE @StartTime DATETIME = '2024-06-12 00:00:00.000';(User เลือก)
+DECLARE @FinishTime DATETIME = '2024-06-13 00:00:00.000'; 
+SubqueryUpdate.RowNum = 1; 
+ถ้าใช้ Lead ต้องมี Script update ตามหลัง

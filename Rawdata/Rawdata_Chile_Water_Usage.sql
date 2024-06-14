@@ -7,6 +7,8 @@ SELECT
       ,[Usage_Chilled_water_Line7_8_9]
       ,[Water_Glazing_Line7_8_9]
       ,[Water_Glazing_Line7_8_9_per_Day]
+                    ,ROW_NUMBER() OVER (ORDER BY [Date]) AS RowNum
+
 FROM (
     SELECT
         [ID],

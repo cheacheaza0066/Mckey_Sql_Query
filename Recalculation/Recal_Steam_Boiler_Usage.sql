@@ -1,6 +1,7 @@
-DECLARE @StartTime DATETIME = '2024-06-12 00:00:00.000';
+DECLARE @StartTime DATETIME = '2024-06-12 00:00:00.000';--keyin
 DECLARE @FinishTime DATETIME = '2024-06-13 00:00:00.000';
-
+-- DECLARE @FinishTime DATETIME = CAST(GETDATE() AS DATE); 
+-- DECLARE @StartTime DATETIME = DATEADD(DAY, -1, @FinishTime);
 WITH SubqueryUpdate AS (
     SELECT
          [Date]
@@ -40,6 +41,6 @@ SET
       ,[Total_usage_Boiler_03_04] = SubqueryUpdate.[Total_usage_Boiler_03_04]
 FROM SubqueryUpdate
 WHERE
-    [ut_sus_rpt_steam_boiler_usage].[Date] = @FinishTime
+    [ut_sus_rpt_steam_boiler_usage].[Date] = @StartTime
     AND [ut_sus_rpt_steam_boiler_usage].Approve = 0
-    AND SubqueryUpdate.RowNum = 2; 
+    AND SubqueryUpdate.RowNum = 1; 

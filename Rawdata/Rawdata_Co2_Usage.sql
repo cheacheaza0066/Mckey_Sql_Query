@@ -8,6 +8,8 @@ SELECT TOP (1000)
       ,[Line5]
       ,[Line6]
       ,[Description]
+              ,ROW_NUMBER() OVER (ORDER BY [Date]) AS RowNum
+
   FROM (select 
        [Date]
       ,[Unit]

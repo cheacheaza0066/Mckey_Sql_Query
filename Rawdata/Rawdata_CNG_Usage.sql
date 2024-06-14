@@ -37,6 +37,7 @@ SELECT TOP (1000)
 , ((Hot_oil_03_Usage + Hot_oil_04_Usage + Hot_oil_05_Usage)+(Boiler_03_Usage + Boiler_04_Usage)) as [Total_Hot_Oil_Boiler_Usage_03_04_05]
 
 , (((Hot_oil_03_Usage + Hot_oil_04_Usage + Hot_oil_05_Usage) + (Boiler_03_Usage + Boiler_04_Usage)) * (27 + 14.696) * (60 + 460) / (14.73 * (9 * (25 + 273.15) / 5))) as SCM_Hot_oil_Boiler_Usage_03_04_05
+              ,ROW_NUMBER() OVER (ORDER BY [Date]) AS RowNum
 
 
 FROM (select

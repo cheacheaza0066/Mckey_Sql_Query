@@ -1,5 +1,8 @@
-DECLARE @StartTime DATETIME = '2024-06-12 00:00:00.000';
-DECLARE @FinishTime DATETIME = '2024-06-13 00:00:00.000';
+DECLARE @StartTime DATETIME = '2024-06-13 00:00:00.000';--keyin user
+DECLARE @FinishTime DATETIME = '2024-06-14 00:00:00.000'; 
+
+-- DECLARE @FinishTime DATETIME = CAST(GETDATE() AS DATE); 
+-- DECLARE @StartTime DATETIME = DATEADD(DAY, -1, @FinishTime);
 
 WITH SubqueryUpdate AS (
     SELECT
@@ -7,11 +10,23 @@ WITH SubqueryUpdate AS (
         [Unit],
         [Meter_CO2],
         [Fill_Up_CO2],
+        [CO2_usage],
         [Pressure],
-        CASE WHEN [Meter_CO2] - LEAD([Meter_CO2]) OVER (ORDER BY [Date]) + [Fill_Up_CO2] IS NULL THEN 0 ELSE [Meter_CO2] - LEAD([Meter_CO2]) OVER (ORDER BY [Date]) + [Fill_Up_CO2] END AS [CO2_usage],
         ROW_NUMBER() OVER (ORDER BY [Date]) AS RowNum
-    FROM [ISMPALI].[dbo].[ut_sus_rw_data_co2_usage]
-    WHERE [Date] BETWEEN @StartTime AND @FinishTime
+    FROM (
+        SELECT
+            [Date],
+            [Unit],
+            [Meter_CO2],
+            [Fill_Up_CO2],
+            [Pressure],
+            
+           	  case when [Meter_CO2] - LEAD([Meter_CO2]) over (order by [Date]) + [Fill_Up_CO2]  is null then 0 else [Meter_CO2] - LEAD([Meter_CO2]) over (order by [Date]) + [Fill_Up_CO2]  END as [CO2_usage]
+
+
+        FROM [ISMPALI].[dbo].[ut_sus_rw_data_co2_usage]
+        WHERE [Date] BETWEEN @StartTime AND @FinishTime
+    ) AS Subquery
 )
 UPDATE [ISMPALI].[dbo].[ut_sus_rpt_co2_usage]
 SET 
@@ -21,6 +36,6 @@ SET
     [Pressure] = SubqueryUpdate.[Pressure]
 FROM SubqueryUpdate
 WHERE 
-    [ut_sus_rpt_co2_usage].[Date] = @FinishTime
+    [ut_sus_rpt_co2_usage].[Date] = @StartTime--keyin user
     AND [ut_sus_rpt_co2_usage].[Approve] = 0
-    AND SubqueryUpdate.RowNum = 2; 
+    AND SubqueryUpdate.RowNum = 1;
