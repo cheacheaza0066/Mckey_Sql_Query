@@ -1,5 +1,5 @@
 DECLARE @StartTime DATETIME = '2024-06-12 00:00:00.000';
-DECLARE @FinishTime DATETIME = '2024-06-13 00:00:00.000';
+DECLARE @FinishTime DATETIME = '2024-06-13 00:00:00.000'; --keyin
 
 WITH SubqueryUpdate AS (
     SELECT
