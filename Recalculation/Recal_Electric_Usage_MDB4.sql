@@ -33,7 +33,7 @@ WITH SubqueryUpdate AS (
             CASE WHEN LAG([Comp_Starter_SC07_kW_Hr]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [Comp_Starter_SC07_kW_Hr] - LAG([Comp_Starter_SC07_kW_Hr]) OVER (ORDER BY [Date]) END AS [Comp_Starter_SC07],
             CASE WHEN LAG([Comp_Starter_SC08_kW_Hr]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [Comp_Starter_SC08_kW_Hr] - LAG([Comp_Starter_SC08_kW_Hr]) OVER (ORDER BY [Date]) END AS [Comp_Starter_SC08],
             CASE WHEN LAG([Auxiliary_MDB4_kW_Hr]) OVER (ORDER BY [Date]) IS NULL THEN 0 ELSE [Auxiliary_MDB4_kW_Hr] - LAG([Auxiliary_MDB4_kW_Hr]) OVER (ORDER BY [Date]) END AS [Auxiliary_MDB4]
-        FROM [ISMPALI].[dbo].[ut_sus_rw_data_electric_usage_mdb3]
+        FROM [ISMPALI].[dbo].[ut_sus_rw_data_electric_usage_mdb4]
         WHERE [Date] BETWEEN @StartTime AND @FinishTime
     ) AS Subquery
 )
