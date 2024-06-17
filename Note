@@ -14,3 +14,238 @@ DECLARE @StartTime DATETIME = '2024-06-12 00:00:00.000';(User เลือก)
 DECLARE @FinishTime DATETIME = '2024-06-13 00:00:00.000'; 
 SubqueryUpdate.RowNum = 1; 
 ถ้าใช้ Lead ต้องมี Script update ตามหลัง
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	def checkValNull(valIn, alrtTt, alrtMsg):
+	    rtAlrt = False
+	    if valIn == '':
+	        system.perspective.openPopup(id='alrtValNull', title=alrtTt, view='Popup/GeneralAlert', params={'msg': alrtMsg, 'alrtType': "danger"}, draggable=False, resizable=False, modal=True, overlayDismiss=True)
+	        rtAlrt = True
+	    return rtAlrt
+	
+	userName = self.session.props.auth.user.userName
+	headID = self.view.params.HeadID
+	Remark = self.parent.getChild("HeadContainer").getChild("Remark").props.text
+
+	pdtDate = self.parent.getChild("HeadContainer").getChild("datetimePdtDateInput").props.value
+	if checkValNull(str(pdtDate), "Date is empty.", u"กรุณาระบุ 'Date'"): return
+	pdtDate = system.date.format(pdtDate, "yyyy-MM-dd HH:mm.00")
+
+
+	
+	Batch = self.parent.getChild("HeadContainer").getChild("Dropdown_Batch").props.value
+	if checkValNull(str(Batch), "Batch unselected.", u"กรุณาระบุ 'Batch'"): return
+	
+
+	Manual_fryer_temp_In = self.parent.getChild("FryerKeyinContainer").getChild("setting_FryertempIn").props.value
+#	Manual_fryer_temp_In = numberFormat(Manual_fryer_temp_In, "#0.00'%'")
+
+#	if checkValNull(str(Manual_fryer_temp_In), "fryer temp In unselected.", u"กรุณาระบุ 'Fryer Temp In'"): return
+	
+	Manual_fryer_temp_mid = self.parent.getChild("FryerKeyinContainer").getChild("setting_Fryertempmid").props.value
+#	if checkValNull(str(Manual_fryer_temp_mid), "fryer temp mid unselected.", u"กรุณาระบุ 'Fryer Temp Mid'"): return
+	
+	Manual_fryer_temp_Out = self.parent.getChild("FryerKeyinContainer").getChild("setting_Fryertempout").props.value
+#	if checkValNull(str(Manual_fryer_temp_Out), "fryer temp Out unselected.", u"กรุณาระบุ 'Fryer Temp Out'"): return
+	
+	Manual_fryer_Dwell = self.parent.getChild("FryerKeyinContainer").getChild("setting_FryerDewell").props.value
+#	if checkValNull(str(Manual_fryer_Dwell), "fryer Dwell unselected.", u"กรุณาระบุ 'Fryer Dewell'"): return
+	
+	Manual_fryer_OilLevel = self.parent.getChild("FryerKeyinContainer").getChild("setting_FryerOilLevel").props.value
+#	if checkValNull(str(Manual_fryer_OilLevel), "fryer Oil Level unselected.", u"กรุณาระบุ 'Fryer Oil Level'"): return
+	
+	Manual_oven_temp_zone1 = self.parent.getChild("OvenKeyinContainer").getChild("setting_OventempZone1").props.value
+#	if checkValNull(str(Manual_oven_temp_zone1), "oven temp zone1 unselected.", u"กรุณาระบุ 'oven Temp zone1'"): return
+	
+	Manual_oven_temp_zone2 = self.parent.getChild("OvenKeyinContainer").getChild("setting_OventempZone2").props.value
+#	if checkValNull(str(Manual_oven_temp_zone2), "oven temp zone2 unselected.", u"กรุณาระบุ 'oven Temp zone2'"): return
+	
+	Manual_oven_Dwell = self.parent.getChild("OvenKeyinContainer").getChild("setting_OvenDwell").props.value
+#	if checkValNull(str(Manual_oven_Dwell), "oven dwell unselected.", u"กรุณาระบุ 'oven dwell'"): return
+	
+	Manual_oven_RelativeZone1 = self.parent.getChild("OvenKeyinContainer").getChild("setting_OvenRelativezone1").props.value
+#	if checkValNull(str(Manual_oven_RelativeZone1), "oven RelativeZone1 unselected.", u"กรุณาระบุ 'oven RelativeZone1'"): return
+	
+	Manual_oven_RelativeZone2 = self.parent.getChild("OvenKeyinContainer").getChild("setting_OvenRelativezone2").props.value
+#	if checkValNull(str(Manual_oven_RelativeZone2), "oven RelativeZone2 unselected.", u"กรุณาระบุ 'oven RelativeZone2'"): return
+	
+	Manual_oven_OilPress = self.parent.getChild("OvenKeyinContainer").getChild("setting_OvenOilPressure").props.value
+#	if checkValNull(str(Manual_oven_OilPress), "oven Oil Pressure unselected.", u"กรุณาระบุ 'oven oil Pressure'"): return
+	
+	# Machine Tag
+
+	MC_fryer_temp_In = self.parent.getChild("FryerMcContainer").getChild("Mc_FryertempIn").props.value
+	
+	MC_fryer_temp_mid = self.parent.getChild("FryerMcContainer").getChild("Mc_Fryertempmid").props.value
+	MC_fryer_temp_Out = self.parent.getChild("FryerMcContainer").getChild("Mc_Fryertempout").props.value
+	MC_fryer_Dwell = self.parent.getChild("FryerMcContainer").getChild("Mc_FryerDwell").props.value
+	
+	MC_oven_tempzone1 = self.parent.getChild("OvenMCContainer").getChild("Mc_OvenTempZone1").props.value
+	MC_oven_tempzone2 = self.parent.getChild("OvenMCContainer").getChild("Mc_OvenTempZone2").props.value
+	MC_oven_Dwell = self.parent.getChild("OvenMCContainer").getChild("Mc_OvenDwell").props.value
+	MC_oven_Relativezone1 = self.parent.getChild("OvenMCContainer").getChild("Mc_OvenRelativeZone1").props.value
+	MC_oven_Relativezone2 = self.parent.getChild("OvenMCContainer").getChild("Mc_OvenRelativeZone2").props.value
+	MC_oven_fanspeed1 = self.parent.getChild("OvenMCContainer").getChild("Mc_OvenFanspeedzone1").props.value
+	MC_oven_fanspeed2 = self.parent.getChild("OvenMCContainer").getChild("Mc_OvenFanspeedzone2").props.value
+
+
+	
+	try:
+	    insrtQry = """
+	        INSERT INTO [ISMPALI].[dbo].[tbmcFryerOvenParamsRptDetail] (
+    [FryerOvenParamsRptDetailId],
+    [FryerOvenParamsRptHeadId],
+    [RecDateTime],
+    [BatchNo],
+    [FryerTempInMcVal],
+    [FryerTempInMcUnit],
+    [FryerTempInSetingVal],
+    [FryerTempInSetingUnit],
+    [FryerTempMidMcVal],
+    [FryerTempMidMcUnit],
+    [FryerTempMidSetingVal],
+    [FryerTempMidSetingUnit],
+    [FryerTempOutMcVal],
+    [FryerTempOutMcUnit],
+    [FryerTempOutSetingVal],
+    [FryerTempOutSetingUnit],
+    [FryerDwellMcVal],
+    [FryerDwellMcUnit],
+    [FryerDwellSetingVal],
+    [FryerDwellSetingUnit],
+    [FryerOilLevelSetingVal],
+    [FryerOilLevelSetingUnit],
+    [OvenTempZone1McVal],
+    [OvenTempZone1McUnit],
+    [OvenTempZone1SetingVal],
+    [OvenTempZone1SetingUnit],
+    [OvenTempZone2McVal],
+    [OvenTempZone2McUnit],
+    [OvenTempZone2SetingVal],
+    [OvenTempZone2SetingUnit],
+    [OvenDwellMcVal],
+    [OvenDwellMcUnit],
+    [OvenDwellSetingVal],
+    [OvenDwellSetingUnit],
+    [OvenRelativeHumidityZone1McVal],
+    [OvenRelativeHumidityZone1McUnit],
+    [OvenRelativeHumidityZone1SetingVal],
+    [OvenRelativeHumidityZone1SetingUnit],
+    [OvenRelativeHumidityZone2McVal],
+    [OvenRelativeHumidityZone2McUnit],
+    [OvenRelativeHumidityZone2SetingVal],
+    [OvenRelativeHumidityZone2SetingUnit],
+    [OvenFanspeedZone1McVal],
+    [OvenFanspeedZone1McUnit],
+    [OvenFanspeedZone2McVal],
+    [OvenFanspeedZone2McUnit],
+    [OvenOilPressureSetingVal],
+    [OvenOilPressureSetingUnit],
+    [CreateBy],
+    [CreateDate],
+  [RemarkDesc]
+) VALUES (
+    NEWID(),
+    ?,
+    ?,
+    ?,
+    ?,
+    'C',
+    ?,
+    'C',
+    ?,
+    'C',
+    ?,
+    'C',
+    ?,
+    'C',
+    ?,
+    'C',
+    ?,
+    'sec',
+    ?,
+    'sec',
+    ?,
+    'liters',
+    ?,
+    'C',
+    ?,
+    'C',
+    ?,
+    'C',
+    ?,
+    'C',
+    ?,
+    'min',
+    ?,
+    'min',
+    ?,
+    '%',
+    ?,
+    '%',
+    ?,
+    '%',
+    ?,
+    '%',
+    ?,
+    '%',
+    ?,
+    '%',
+    ?,
+    '%',
+    ?,
+    GETDATE(),
+    ?
+);
+	    """
+	    updateQry = system.db.runPrepUpdate(query=insrtQry, args=[
+	        headID,
+	        pdtDate,
+	        Batch,
+	        MC_fryer_temp_In,
+	        Manual_fryer_temp_In,
+	        MC_fryer_temp_mid,
+	        Manual_fryer_temp_mid,
+	        MC_fryer_temp_Out,
+	        Manual_fryer_temp_Out,
+	        MC_fryer_Dwell,
+	        Manual_fryer_Dwell,
+	        Manual_fryer_OilLevel,
+	        MC_oven_tempzone1,
+	        Manual_oven_temp_zone1,
+	        MC_oven_tempzone2,
+	        Manual_oven_temp_zone2,
+	        MC_oven_Dwell,
+	        Manual_oven_Dwell,
+	        MC_oven_Relativezone1,
+	        Manual_oven_RelativeZone1,
+	        MC_oven_Relativezone2,
+	        Manual_oven_RelativeZone2,
+	        MC_oven_fanspeed1,
+	        MC_oven_fanspeed2,
+	        Manual_oven_OilPress,
+	        userName,
+	        Remark
+	    ])
+	    
+	    if updateQry > 0:
+	        system.perspective.openPopup(id='alrtPopSuccess', title='Success', view='Popup/GeneralAlert', params={'msg': 'Create Machine Verify success.','alrtType': 'success'}, draggable=False, resizable=False, modal=True, overlayDismiss=True)
+	except:
+	    system.perspective.openPopup(id='alrtPopFail', title='Fail', view='Popup/GeneralAlert', params={'msg': 'Can not create Machine Verify form. Please try again later.','alrtType': 'danger'}, draggable=False, resizable=False, modal=True, overlayDismiss=True)
+	
+	system.perspective.closePopup('create List Machine')
+	system.perspective.sendMessage('callToRefreshBinding')
