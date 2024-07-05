@@ -48,13 +48,25 @@ SELECT
 
 	 @Price_Per_Unit as Estimate_Cost_Price_Per_Unit,
 
-	 @Avg_Usage_Per_Day as Estimate_Cost_Avg_Usage_Per_Day,
+	  (SELECT CAST(Sum(wtp.Total_water_PWA_supply_usage) AS INT)
+     FROM [ISMPALI].[dbo].[ut_sus_rpt_total_wtp_wwtp_usage] as wtp
+     WHERE Date between @StartDate and @EndDate) / @Avg_Usage_Per_Day as Estimate_Cost_Avg_Usage_Per_Day,
+
 
 	 (SELECT CAST(Sum(wtp.Total_water_PWA_supply_usage) AS INT)
      FROM [ISMPALI].[dbo].[ut_sus_rpt_total_wtp_wwtp_usage] as wtp
-     WHERE Date between @StartDate and @EndDate) * @Avg_Usage_Per_Day as Estimate_Cost_Total_Cost
+     WHERE Date between @StartDate and @EndDate) * @Price_Per_Unit as Estimate_Cost_Total_Cost,
 
+	 	 @Avg_Usage_Per_Day as Estimate_Cost_Day_of_this_Period,
 
+		(@Price_Per_Unit
+		*
+		 (SELECT CAST(Sum(wtp.Total_water_PWA_supply_usage) AS INT)
+     FROM [ISMPALI].[dbo].[ut_sus_rpt_total_wtp_wwtp_usage] as wtp
+     WHERE Date between @StartDate and @EndDate) / @Avg_Usage_Per_Day
+	 *
+	 @Avg_Usage_Per_Day
+		) as Estimate_Cost_Day_of_this_Period_Total_Cost
 
 UNION ALL
 
@@ -96,12 +108,26 @@ SELECT
      WHERE Date between @StartDate and @EndDate) * @Const_Per_Unit / @Cost_FG_KG as Cost_By_Period_Cost_FG_KG,
 
 	 @Price_Per_Unit as Estimate_Cost_Price_Per_Unit,
+	 (SELECT CAST(Sum(wtp.Total_water_PWA_supply_usage) AS INT)
+     FROM [ISMPALI].[dbo].[ut_sus_rpt_total_wtp_wwtp_usage] as wtp
+     WHERE Date between @StartDate and @EndDate) / @Avg_Usage_Per_Day as Estimate_Cost_Avg_Usage_Per_Day,
 
-	 @Avg_Usage_Per_Day as Estimate_Cost_Avg_Usage_Per_Day,
 
 	 (SELECT CAST(Sum(wtp.Total_water_PWA_supply_usage) AS INT)
      FROM [ISMPALI].[dbo].[ut_sus_rpt_total_wtp_wwtp_usage] as wtp
-     WHERE Date between @StartDate and @EndDate) * @Avg_Usage_Per_Day as Estimate_Cost_Total_Cost
+     WHERE Date between @StartDate and @EndDate) * @Price_Per_Unit as Estimate_Cost_Total_Cost,
+
+	 	 	 @Avg_Usage_Per_Day as Estimate_Cost_Day_of_this_Period,
+
+
+(@Price_Per_Unit
+		*
+		  (SELECT CAST(Sum(wtp.Total_water_PWA_supply_usage) AS INT)
+     FROM [ISMPALI].[dbo].[ut_sus_rpt_total_wtp_wwtp_usage] as wtp
+     WHERE Date between @StartDate and @EndDate) / @Avg_Usage_Per_Day
+	 *
+	 @Avg_Usage_Per_Day
+		) as Estimate_Cost_Day_of_this_Period_Total_Cost
 
 
 
@@ -146,11 +172,26 @@ SELECT
 
 	 @Price_Per_Unit as Estimate_Cost_Price_Per_Unit,
 
-	 @Avg_Usage_Per_Day as Estimate_Cost_Avg_Usage_Per_Day,
+	 (SELECT CAST(Sum(wtp.Total_waste_water) AS INT)
+     FROM [ISMPALI].[dbo].[ut_sus_rpt_total_wtp_wwtp_usage] as wtp
+     WHERE Date between @StartDate and @EndDate) / @Avg_Usage_Per_Day as Estimate_Cost_Avg_Usage_Per_Day,
+
 
 	 (SELECT CAST(Sum(wtp.Total_waste_water) AS INT)
      FROM [ISMPALI].[dbo].[ut_sus_rpt_total_wtp_wwtp_usage] as wtp
-     WHERE Date between @StartDate and @EndDate) * @Avg_Usage_Per_Day as Estimate_Cost_Total_Cost
+     WHERE Date between @StartDate and @EndDate) * @Price_Per_Unit as Estimate_Cost_Total_Cost,
+
+	 	 	 	 @Avg_Usage_Per_Day as Estimate_Cost_Day_of_this_Period,
+
+
+(@Price_Per_Unit
+		*
+		 (SELECT CAST(Sum(wtp.Total_waste_water) AS INT)
+     FROM [ISMPALI].[dbo].[ut_sus_rpt_total_wtp_wwtp_usage] as wtp
+     WHERE Date between @StartDate and @EndDate) / @Avg_Usage_Per_Day
+	 *
+	 @Avg_Usage_Per_Day
+		) as Estimate_Cost_Day_of_this_Period_Total_Cost
 
 
 
@@ -195,11 +236,26 @@ SELECT
 
 	 @Price_Per_Unit as Estimate_Cost_Price_Per_Unit,
 
-	 @Avg_Usage_Per_Day as Estimate_Cost_Avg_Usage_Per_Day,
+	 (SELECT CAST(Sum(mdb.PEA_Meter) AS INT)
+     FROM [ISMPALI].[dbo].[ut_sus_rpt_electric_usage_mdb1] as mdb
+     WHERE Date between @StartDate and @EndDate) / @Avg_Usage_Per_Day as Estimate_Cost_Avg_Usage_Per_Day,
+
 
 	 (SELECT CAST(Sum(mdb.[PEA_Meter]) AS INT)
      FROM [ISMPALI].[dbo].[ut_sus_rpt_electric_usage_mdb1] as mdb
-     WHERE Date between @StartDate and @EndDate) * @Avg_Usage_Per_Day as Estimate_Cost_Total_Cost
+     WHERE Date between @StartDate and @EndDate) * @Price_Per_Unit as Estimate_Cost_Total_Cost,
+
+	 	 	 	 @Avg_Usage_Per_Day as Estimate_Cost_Day_of_this_Period,
+
+
+(@Price_Per_Unit
+		*
+		 (SELECT CAST(Sum(mdb.PEA_Meter) AS INT)
+     FROM [ISMPALI].[dbo].[ut_sus_rpt_electric_usage_mdb1] as mdb
+     WHERE Date between @StartDate and @EndDate) / @Avg_Usage_Per_Day
+	 *
+	 @Avg_Usage_Per_Day
+		) as Estimate_Cost_Day_of_this_Period_Total_Cost
 
 
 
@@ -247,11 +303,27 @@ SELECT
 
 	 	 @Price_Per_Unit as Estimate_Cost_Price_Per_Unit,
 
-		 	 @Avg_Usage_Per_Day as Estimate_Cost_Avg_Usage_Per_Day,
+		 
+    (SELECT CAST(Sum(cng.[SCM_CNG_usage]) AS INT)
+     FROM [ISMPALI].[dbo].[ut_sus_rpt_cng_usage] as cng
+     WHERE Date between @StartDate and @EndDate) / @Avg_Usage_Per_Day as Estimate_Cost_Avg_Usage_Per_Day,
+
 
 			(SELECT CAST(Sum(cng.[SCM_CNG_usage]) AS INT)
      FROM [ISMPALI].[dbo].[ut_sus_rpt_cng_usage] as cng
-     WHERE Date between @StartDate and @EndDate) * @Price_Per_Unit as Estimate_Cost_Total_Cost
+     WHERE Date between @StartDate and @EndDate) * @Price_Per_Unit as Estimate_Cost_Total_Cost,
+
+	 	 	 	 @Avg_Usage_Per_Day as Estimate_Cost_Day_of_this_Period,
+
+
+(@Price_Per_Unit
+		*
+		(SELECT CAST(Sum(cng.[SCM_CNG_usage]) AS INT)
+     FROM [ISMPALI].[dbo].[ut_sus_rpt_cng_usage] as cng
+     WHERE Date between @StartDate and @EndDate) / @Avg_Usage_Per_Day
+	 *
+	 @Avg_Usage_Per_Day
+		) as Estimate_Cost_Day_of_this_Period_Total_Cost
 
 
 
@@ -298,11 +370,26 @@ SELECT
 
 
 	 	 @Price_Per_Unit as Estimate_Cost_Price_Per_Unit,
+		     (SELECT CAST(Sum(co2.CO2_usage) AS INT)
+     FROM [ISMPALI].[dbo].[ut_sus_rpt_co2_usage] as co2
+     WHERE Date between @StartDate and @EndDate) / @Avg_Usage_Per_Day as Estimate_Cost_Avg_Usage_Per_Day,
 
-		 	 @Avg_Usage_Per_Day as Estimate_Cost_Avg_Usage_Per_Day,
 
 			(SELECT CAST(Sum(co2.CO2_usage) AS INT)
      FROM [ISMPALI].[dbo].[ut_sus_rpt_co2_usage] as co2
-     WHERE Date between @StartDate and @EndDate) * @Price_Per_Unit as Estimate_Cost_Total_Cost
+     WHERE Date between @StartDate and @EndDate) * @Price_Per_Unit as Estimate_Cost_Total_Cost,
+
+	 	 	 	 @Avg_Usage_Per_Day as Estimate_Cost_Day_of_this_Period,
+
+
+(@Price_Per_Unit
+		*
+		 
+			(SELECT CAST(Sum(co2.CO2_usage) AS INT)
+     FROM [ISMPALI].[dbo].[ut_sus_rpt_co2_usage] as co2
+     WHERE Date between @StartDate and @EndDate) / @Avg_Usage_Per_Day
+	 *
+	 @Avg_Usage_Per_Day
+		) as Estimate_Cost_Day_of_this_Period_Total_Cost
 
 
